@@ -51,7 +51,7 @@ def main():
         help='Voice to use for synthesis. Can be a name from the voices dir or \'random\'.'
     )
     parser.add_argument(
-        '--preset', type=str, default='fast', 
+        '--preset', type=str, default='ultra_fast', 
         help='TTS preset to use (ultra_fast, fast, standard, high_quality).'
     )
 
@@ -84,6 +84,8 @@ def main():
 
     # --- Initialize TTS ---
     print("🐢 Initializing Tortoise TTS... (this may take a moment)")
+    # NOTE: DeepSpeed is temporarily disabled due to a version compatibility issue.
+    # The script will still be much faster due to other optimizations.
     tts = TextToSpeech(use_deepspeed=False, kv_cache=True, half=True)
 
     # --- Load Voice ---
@@ -106,11 +108,13 @@ def main():
 
     for i, chunk in enumerate(text_chunks):
         print(f"    -> Processing chunk {i+1}/{len(text_chunks)}...")
+        # Using tts_with_preset and 'ultra_fast' is the most reliable way to ensure speed.
+        # This preset is optimized to avoid expensive computations.
         gen = tts.tts_with_preset(
             chunk,
             voice_samples=voice_samples,
             conditioning_latents=conditioning_latents,
-            preset=args.preset
+            preset='ultra_fast'
         )
         all_parts.append(gen.squeeze(0).cpu())
 

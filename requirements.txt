@@ -1,3 +1,4 @@
+deepspeed
 rotary_embedding_torch
 transformers==4.31.0
 inflect
