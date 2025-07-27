@@ -31,7 +31,6 @@ First, clone this repository to your local machine:
 
 ```bash
 git clone <your-repository-url>
-cd <repository-name>/TTS
 ```
 
 ### 2. Run the Setup Script
